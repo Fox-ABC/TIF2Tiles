@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GIFF TIF 瓦片工具</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header>
+        <h1>TIF 切图桌面工具</h1>
+        <p>读取 TIF 图层信息并生成用于高德或 Mapbox+天地图的瓦片</p>
+      </header>
+
+      <section class="card" id="setup-page">
+        <h2>第一步：准备运行环境</h2>
+        <p class="inline-hint">
+          请先在本机手动安装 GDAL 命令行工具（需包含
+          gdalinfo、gdalwarp、gdal_translate、gdal2tiles）。macOS 可用
+          Homebrew：
+          <code>brew install gdal</code>；Windows 可安装 OSGeo4W、QGIS
+          自带环境，或使用 conda-forge 安装
+          gdal。安装完成后点击「重新检测环境」，检测通过即可进入切图页面。
+        </p>
+        <div class="env-check">
+          <h3>运行环境检测</h3>
+          <div class="actions">
+            <button id="env-recheck-btn" type="button" class="primary">
+              重新检测环境
+            </button>
+          </div>
+          <p id="env-summary" class="inline-hint">尚未检测 GDAL 环境。</p>
+          <pre id="env-details"></pre>
+        </div>
+      </section>
+
+      <div id="work-page" style="display: none">
+        <section class="card">
+          <h2>第二步：输入参数并切图</h2>
+          <div class="form-grid">
+            <label class="path-label">
+              输入 TIF 文件
+              <div class="path-row">
+                <input
+                  id="input-path"
+                  readonly
+                  placeholder="请选择 .tif / .tiff 文件"
+                />
+                <button id="pick-input-btn" type="button">选择文件</button>
+              </div>
+            </label>
+            <label class="path-label">
+              本地临时目录
+              <div class="path-row path-row--output-base">
+                <input
+                  id="output-dir"
+                  readonly
+                  placeholder="环境检测通过后将显示系统临时目录"
+                />
+                <button id="pick-output-btn" type="button">选择文件夹</button>
+                <button id="reset-output-temp-btn" type="button">
+                  系统临时目录
+                </button>
+              </div>
+            </label>
+            <label>
+              重采样
+              <select id="resampling">
+                <option value="average">average</option>
+                <option value="near">near</option>
+                <option value="bilinear">bilinear</option>
+                <option value="cubic">cubic</option>
+              </select>
+            </label>
+            <label>
+              目标瓦片用途
+              <select id="target-crs">
+                <option value="webmercator" selected>
+                  Mapbox + 天地图展示（WebMercator / EPSG:3857）
+                </option>
+                <option value="gcj02">高德地图展示（GCJ-02）</option>
+              </select>
+            </label>
+            <label>
+              最小缩放级别
+              <input id="zoom-min" type="number" min="0" max="24" value="12" />
+            </label>
+            <label>
+              最大缩放级别
+              <input id="zoom-max" type="number" min="0" max="24" value="18" />
+            </label>
+            <label class="toggle-label">
+              <input id="skip-disk-check" type="checkbox" />
+              <span>本次任务强制继续（忽略磁盘空间检查）</span>
+            </label>
+          </div>
+          <p class="risk-hint">
+            仅在你确认磁盘空间和输出规模可控时启用，可能出现中途失败或磁盘写满。
+          </p>
+
+          <p id="gcj-hint" class="inline-hint">
+            选择 TIF
+            后会自动读取坐标信息；读取成功后将按目标瓦片用途显示最小最大经纬度。
+          </p>
+          <div class="gcj-grid" id="gcj-fields">
+            <h3 id="coord-title">坐标预览</h3>
+            <label>图层最小经度 <input id="coord-ulx" readonly /></label>
+            <label>图层最小纬度 <input id="coord-uly" readonly /></label>
+            <label>图层最大经度 <input id="coord-lrx" readonly /></label>
+            <label>图层最大纬度 <input id="coord-lry" readonly /></label>
+            <div
+              class="tile-link-panel"
+              id="tile-link-panel"
+              style="display: none"
+            >
+              <p class="tile-link-title">线上瓦片地址</p>
+              <div class="tile-link-row">
+                <input id="tile-link-value" readonly />
+                <button id="copy-tile-link-btn" type="button">复制</button>
+              </div>
+            </div>
+            <p id="coord-note" class="coord-note"></p>
+            <div class="progress-section">
+              <div class="progress-wrap">
+                <progress id="progress-bar" max="100" value="0"></progress>
+                <span id="progress-text">0%</span>
+              </div>
+              <p id="status-text">等待任务开始</p>
+              <pre id="log-output" style="height: 80px"></pre>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="run-btn" class="primary">开始切图</button>
+            <button id="cancel-btn" class="danger" style="display: none">
+              取消任务
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "giff-tif-tile-tool",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/ensure-oss-keys.mjs",
+    "prebuild": "node scripts/ensure-oss-keys.mjs",
+    "pretauri:dev": "node scripts/ensure-oss-keys.mjs",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "release:build": "bash ./scripts/build-release.sh",
+    "release:macos:dual": "bash ./scripts/build-macos-dual-arch.sh",
+    "offline:install": "bash ./scripts/offline-install.sh",
+    "offline:prepare": "bash ./scripts/prepare-offline-kit.sh"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2.6.0",
+    "@tauri-apps/plugin-opener": "^2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3"
+  }
+}
