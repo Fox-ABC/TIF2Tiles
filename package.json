@@ -14,9 +14,7 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "release:build": "bash ./scripts/build-release.sh",
-    "release:macos:dual": "bash ./scripts/build-macos-dual-arch.sh",
-    "offline:install": "bash ./scripts/offline-install.sh",
-    "offline:prepare": "bash ./scripts/prepare-offline-kit.sh"
+    "release:macos:dual": "bash ./scripts/build-macos-dual-arch.sh"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

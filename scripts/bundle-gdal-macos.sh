@@ -15,7 +15,8 @@ RES_GDAL_DIR="$ROOT_DIR/src-tauri/resources/gdal"
 BIN_DIR="$RES_GDAL_DIR/bin"
 LIB_DIR="$RES_GDAL_DIR/lib"
 SHARE_DIR="$RES_GDAL_DIR/share"
-TMP_DIR="$ROOT_DIR/.offline/.tmp-gdal"
+# 临时目录与历史「离线打包」目录解耦，避免与已废弃的 .offline/ 命名混淆
+TMP_DIR="$ROOT_DIR/.tmp/bundle-gdal-macos"
 
 mkdir -p "$BIN_DIR" "$LIB_DIR" "$SHARE_DIR" "$TMP_DIR"
 chmod -R u+w "$RES_GDAL_DIR" 2>/dev/null || true

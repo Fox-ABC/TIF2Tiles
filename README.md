@@ -60,21 +60,10 @@ npm run tauri:build
 
 - `src-tauri/target/release/bundle/`
 
-## 离线分发与免依赖安装
+## 分发说明
 
-如果希望用户无需手动下载 Node/Rust 依赖，请参考：
-
-- `OFFLINE_GUIDE.md`
-
-常用命令：
-
-```bash
-# 生成离线缓存与离线开发包
-npm run offline:prepare
-
-# 在离线环境恢复依赖
-npm run offline:install
-```
+- **最终用户**只需安装你打包好的应用（如 `.dmg` / `.msi` / `.exe`），**不需要**在本机安装 Node.js 或 Rust。
+- **构建方**在联网环境执行 `npm install` 与 `npm run tauri:build` 即可；产物见 `src-tauri/target/release/bundle/`。
 
 ## GDAL 运行环境（需自行安装）
 
@@ -131,5 +120,3 @@ npm run offline:install
 - 默认对 `gdal2tiles` 显式传入 `--no-kml`，不生成 KML 文件。
 - 中间文件（如 `*_wgs84.tif`、`*_3857.tif`、`*_gcj_tagged.tif`）在任务成功后自动清理。
 - 若任务失败，则保留中间文件用于排查；若成功但清理失败，日志会提示残留路径，可手动删除。
-# TIF2Tiles
-# TIF2Tiles
